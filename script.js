@@ -7,18 +7,16 @@ remote_buttons.forEach(button => {
 
 
 async function sendCommand(event) {
-    const url = "http://192.168.0.148:8060/keypress/volumeup";
+    const url = "http://192.168.0.148:8060/keypress/"+event.target.id;
     try {
         const response = await fetch(url, {
             method: "POST",
             mode: "no-cors"
         });
-        if (!response.ok) {
-            throw new Error("error");
-        }
-        console.log("success");
+        console.log(response);
     }
     catch(error) {
+        console.log(error);
         console.error("error");
     }
 
