@@ -1,4 +1,5 @@
 const remote_buttons = document.querySelectorAll(".remote-buttons");
+console.log(remote_buttons);
 const tvIp = "192.168.0.0";
 remote_buttons.forEach(button => {
     button.addEventListener("click", sendCommand);
