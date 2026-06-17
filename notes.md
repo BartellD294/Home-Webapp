@@ -9,3 +9,5 @@ Direct text can be sent (to search bar, etc) using keypress "lit_(character)".
 example:
 curl -d '' "http://192.168.0.148:8060/keypress/lit_a"
 
+Curl command for device status:
+curl "http://192.168.0.148:8060/query/device-info"

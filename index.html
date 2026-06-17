@@ -33,7 +33,18 @@
             <div class="down-button">
                     <button class="remote-buttons" id="down">&#9660;</button>
             </div>
-            <button class="remote-buttons" id="Lit_a">a</button>
+            <div class="keyboard-row">
+                <input id="keyboard-input" type="text" placeholder="Type here...">
+                <button id="keyboard-clear">Clear</button>
+            </div>
+            <div class="scan-row">
+                <input id="subnet-start" type="text" placeholder="Subnet start (e.g. 192.168.0)">
+                <span>.</span>
+                <input id="low-ip" type="number" placeholder="Low IP (e.g. 1)" min="0" max="255">
+                <span>-</span>
+                <input id="high-ip" type="number" placeholder="High IP (e.g. 254)" min="0" max="255">
+                <button id="scan-button">Scan for devices</button>
+            </div> 
         </div>
         <footer>
             <p>Icons by <a href="https://www.icons8.com/">Icons8</a></p>

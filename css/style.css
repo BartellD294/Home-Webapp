@@ -53,3 +53,21 @@ button {
     align-items: center;
     /* height: 100vh; */
 }
+.keyboard-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+}
+#keyboard-input {
+    width: 65%;
+    font-size: 16px;
+
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+#keyboard-clear {
+    width: 35%;
+    justify-content: center;
+}
