@@ -5,6 +5,8 @@ const scanButton = document.querySelector("#scan-button");
 //var rokuUrl = "http://192.168.0.148:8060/keypress/";
 var rokuIp = "192.168.0.148";
 
+let rokuIpList = [];
+
 // event listeners
 remoteButtons.forEach(button => {
     button.addEventListener("click", buttonPress);
@@ -25,7 +27,8 @@ clearKeyboardButton.addEventListener("click", () => {
 // });
 
 scanButton.addEventListener("click", () => {
-    testWebSocket();
+    //testWebSocket();
+    scanForRokus("192.168.0", 190, 215);
 });
 
 // functions
@@ -71,16 +74,21 @@ async function keyPress(event) {
 }
 
 async function scanForRokus(subnetStart, lowIp, highIp) {
+    rokuIpList = [];
     console.log(lowIp, highIp);
     for (let i = lowIp; i <= highIp; i++) {
         console.log("Scanning " + i);
         try {
             //const response = await fetch("http://" + subnetStart + "." + String(i) + ":8060/query/icon/1", {
-            const response = await fetch("ws://" + subnetStart + "." + String(i) + ":8060/ecp-session", {
+            const response = await fetch("http://" + subnetStart + "." + String(i) + ":8060/query/device-info", {
                 method: "GET",
-                //mode: "no-cors"
+                priority: "low",
+                mode: "no-cors",
+                signal: AbortSignal.timeout(100)
             });
             console.log("response:", response);
+            rokuIpList.push(subnetStart + "." + String(i));
+            console.log(rokuIpList);
         }
         catch (error) {
             console.log(error);
@@ -89,22 +97,30 @@ async function scanForRokus(subnetStart, lowIp, highIp) {
     }
 }
 
-async function testWebSocket() {
-    //const wsUrl = "ws://192.168.0.148:8060/ecp-session";
-    const wsUrl = "ws://192.168.0.148:8060/query/device-info";
-    const ws = new WebSocket(wsUrl);
-    //ws.addEventListener("message", () => {
-    ws.onopen = () => {
-        console.log("WebSocket connection opened");
-    };
-}
-async function testWebSockets() {
-    let ws = null;
-    for (let i = 1; i <= 254; i++) {
-        let wsUrl = "ws://192.168.0." + String(i) + ":8060/device-info";
-        ws = new WebSocket(wsUrl);
-        ws.onopen = () => {
-            console.log("WebSocket connection opened to " + wsUrl);
-        }
-    }
-}
+// function rtcPeerConnection() {
+//     const pc = new RTCPeerConnection();
+//     pc.onicecandidate = (event) => {
+//         if (event.candidate) {
+//         }
+//     }
+// }
+
+// async function testWebSocket() {
+//     //const wsUrl = "ws://192.168.0.148:8060/ecp-session";
+//     const wsUrl = "ws://192.168.0.147:8060/ecp-session";
+//     const ws = new WebSocket(wsUrl);
+//     //ws.addEventListener("message", () => {
+//     ws.onopen = () => {
+//         console.log("WebSocket connection opened");
+//     };
+// }
+// async function testWebSockets() {
+//     let ws = null;
+//     for (let i = 1; i <= 254; i++) {
+//         let wsUrl = "ws://192.168.0." + String(i) + ":8060/device-info";
+//         ws = new WebSocket(wsUrl);
+//         ws.onopen = () => {
+//             console.log("WebSocket connection opened to " + wsUrl);
+//         }
+//     }
+// }
