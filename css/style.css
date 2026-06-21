@@ -1,22 +1,32 @@
+html {
+    font-size: 16px;
+}
 body {
-    margin: 0;
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
     background-color: #1f0454;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: white;
 }
 main {
-    flex: 1;
+    display: flex;
+    flex-direction: row;
+    background-color: #1f0454;
+    justify-content: space-between;
+    padding: 0rem 10rem;
+    align-items: center;
+
 }
 
 footer {
-    
+    position: fixed;
     bottom: 0;
     width: 100%;
     background-color: #1a1a1a;
-    color: white;
     text-align: center;
 }
 p {
@@ -28,46 +38,133 @@ button {
     color: white;
     border: 2px solid white;
     border-radius: 20px;
-    width: 50px;
+    /* width: 50px; */
+    width: 2.5rem;
     height: 35px;
     margin: 5px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
+    text-align: center;
+}
+
+button:hover {
+    background: #04c6cd;
+    transform: scale(1.1);
+    border-width: 1;
+}
+
+.pane {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 12rem;
+    max-height: 30rem;
+
+    padding: 1rem;
+
+    border: 2px solid lightgray;
+    border-radius: 5rem;
+
+    background: #1a1a1a;
 }
 
 .remote {
-    background: #1a1a1a;
+    display: inline-flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    display: flex;
-    width: 200px;
-    height:450px;
-    flex-direction: column;
+
+    width: 12rem;
+    height: 30rem;
+    
+    padding: 1rem;
+
     border: 2px solid lightgray;
-    border-radius: 80px;
+    border-radius: 5rem;
+
+    background: #1a1a1a;
 }
+
+/* .remote-buttons {
+    classified to select in JS and send commands based on ID
+} */
+
+.two-row-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.three-row-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
 .center-buttons {
-    display: flex;
-    /* justify-content: center; */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     align-items: center;
-    /* height: 100vh; */
+    
+    border: 1px solid lightgray;
+    border-radius: 3rem;
 }
+
+.direction-buttons {
+    width: 2.5rem;
+    height: 2.5rem;
+    text-align: center;
+}
+
+.ok-button {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 50%;
+}
+
+
+
 .keyboard-row {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     margin: 0 10px;
 }
 #keyboard-input {
-    width: 65%;
+    width: 6rem;
+    display: flex;
     font-size: 16px;
+    margin: 5px;
 
     border-radius: 5px;
     border: 1px solid #ccc;
 }
 #keyboard-clear {
-    width: 35%;
+    /* width: 35%; */
     justify-content: center;
+}
+
+.info-panel {
+    width: 20rem;
+    background: #1a1a1a;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 2px solid lightgray;
+    border-radius: 80px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.scanner-panel {
+    width: 20rem;
+    background: #1a1a1a;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 2px solid lightgray;
+    border-radius: 80px;
 }
