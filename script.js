@@ -82,35 +82,37 @@ async function keyPress(event) {
 
 async function scanForRokus(subnetStart, lowIp, highIp, timeout=100) {
     rokuIpList = [];
-    scanIsRunning = true;
-    console.log("low IP high IP", lowIp, highIp);
-    for (let i = lowIp; i <= highIp; i++) {
-        console.log("Scanning " + i);
-        scanStatusDiv.innerHTML = "<p>Scanning: " + subnetStart + "." + String(i) + "</p>";
+    if (scanIsRunning==false) {
+        scanIsRunning = true;
+        console.log("low IP high IP", lowIp, highIp);
+        for (let i = lowIp; i <= highIp; i++) {
+            console.log("Scanning " + i);
+            scanStatusDiv.innerHTML = "<p>Scanning: " + subnetStart + "." + String(i) + "</p>";
 
-        try {
-            const response = await fetch("http://" + subnetStart + "." + String(i) + ":8060/query/device-info", {
-                method: "GET",
-                priority: "low",
-                mode: "no-cors",
-                signal: AbortSignal.timeout(timeout)
-            });
-            console.log("response:", response);
-            rokuIpList.push(subnetStart + "." + String(i));
-            console.log(rokuIpList);
-            if (document.querySelector("#autofill-checkbox").checked && rokuIpList.length > 0) {
-                rokuIpInput.value = rokuIpList[0];
+            try {
+                const response = await fetch("http://" + subnetStart + "." + String(i) + ":8060/query/device-info", {
+                    method: "GET",
+                    priority: "low",
+                    mode: "no-cors",
+                    signal: AbortSignal.timeout(timeout)
+                });
+                console.log("response:", response);
+                rokuIpList.push(subnetStart + "." + String(i));
+                console.log(rokuIpList);
+                if (document.querySelector("#autofill-checkbox").checked && rokuIpList.length > 0) {
+                    rokuIpInput.value = rokuIpList[0];
+                }
+                updateScanResults();
             }
-            updateScanResults();
+            catch (error) {
+                console.log(error);
+                console.error("error");
+            }
         }
-        catch (error) {
-            console.log(error);
-            console.error("error");
+        scanIsRunning = false;
+        if (rokuIpList.length === 0) {
+            scanResultsDiv.innerHTML = "<p>No Roku devices found.</p>";
         }
-    }
-    scanIsRunning = false;
-    if (rokuIpList.length === 0) {
-        scanResultsDiv.innerHTML = "<p>No Roku devices found.</p>";
     }
 }
 
