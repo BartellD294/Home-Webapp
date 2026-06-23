@@ -1,9 +1,16 @@
 const remoteButtons = document.querySelectorAll(".remote-buttons");
 const keyboardInput = document.querySelector("#keyboard-input");
 const clearKeyboardButton = document.querySelector("#keyboard-clear");
+const scanOctets = document.querySelectorAll(".ip-input");
 const scanButton = document.querySelector("#scan-button");
+const rokuIpInput = document.querySelector("#roku-ip");
+const scanResultsDiv = document.querySelector("#scan-results");
+const scanStatusDiv = document.querySelector("#scan-status");
 //var rokuUrl = "http://192.168.0.148:8060/keypress/";
-var rokuIp = "192.168.0.148";
+
+var scanIsRunning = false;
+
+console.log(scanOctets);
 
 let rokuIpList = [];
 
@@ -27,14 +34,14 @@ clearKeyboardButton.addEventListener("click", () => {
 // });
 
 scanButton.addEventListener("click", () => {
-    //testWebSocket();
-    scanForRokus("192.168.0", 190, 215);
+    let ipStart = scanOctets[0].value + "." + scanOctets[1].value + "." + scanOctets[2].value;
+    scanForRokus(ipStart, scanOctets[3].value, scanOctets[4].value);
 });
 
 // functions
 async function buttonPress(event) {
     console.log(event.target.id);
-    const url = "http://"+rokuIp+":8060/keypress/"+event.target.id;
+    const url = "http://"+rokuIpInput.value+":8060/keypress/"+event.target.id;
     sendCommand(url);
     console.log(url);
 }
@@ -57,7 +64,7 @@ async function sendCommand(url) {
 
 async function keyPress(event) {
     console.log(event.key);
-    const rokuStartUrl = "http://"+rokuIp+":8060/keypress/";
+    const rokuStartUrl = "http://"+rokuIpInput.value+":8060/keypress/";
     var key = event.key;
     if (key === " ") {
         const url = rokuStartUrl+"Lit_%20";
@@ -73,54 +80,48 @@ async function keyPress(event) {
     }
 }
 
-async function scanForRokus(subnetStart, lowIp, highIp) {
+async function scanForRokus(subnetStart, lowIp, highIp, timeout=100) {
     rokuIpList = [];
-    console.log(lowIp, highIp);
+    scanIsRunning = true;
+    console.log("low IP high IP", lowIp, highIp);
     for (let i = lowIp; i <= highIp; i++) {
         console.log("Scanning " + i);
+        scanStatusDiv.innerHTML = "<p>Scanning: " + subnetStart + "." + String(i) + "</p>";
+
         try {
-            //const response = await fetch("http://" + subnetStart + "." + String(i) + ":8060/query/icon/1", {
             const response = await fetch("http://" + subnetStart + "." + String(i) + ":8060/query/device-info", {
                 method: "GET",
                 priority: "low",
                 mode: "no-cors",
-                signal: AbortSignal.timeout(100)
+                signal: AbortSignal.timeout(timeout)
             });
             console.log("response:", response);
             rokuIpList.push(subnetStart + "." + String(i));
             console.log(rokuIpList);
+            if (document.querySelector("#autofill-checkbox").checked && rokuIpList.length > 0) {
+                rokuIpInput.value = rokuIpList[0];
+            }
+            updateScanResults();
         }
         catch (error) {
             console.log(error);
             console.error("error");
         }
     }
+    scanIsRunning = false;
+    if (rokuIpList.length === 0) {
+        scanResultsDiv.innerHTML = "<p>No Roku devices found.</p>";
+    }
 }
 
-// function rtcPeerConnection() {
-//     const pc = new RTCPeerConnection();
-//     pc.onicecandidate = (event) => {
-//         if (event.candidate) {
-//         }
-//     }
-// }
-
-// async function testWebSocket() {
-//     //const wsUrl = "ws://192.168.0.148:8060/ecp-session";
-//     const wsUrl = "ws://192.168.0.147:8060/ecp-session";
-//     const ws = new WebSocket(wsUrl);
-//     //ws.addEventListener("message", () => {
-//     ws.onopen = () => {
-//         console.log("WebSocket connection opened");
-//     };
-// }
-// async function testWebSockets() {
-//     let ws = null;
-//     for (let i = 1; i <= 254; i++) {
-//         let wsUrl = "ws://192.168.0." + String(i) + ":8060/device-info";
-//         ws = new WebSocket(wsUrl);
-//         ws.onopen = () => {
-//             console.log("WebSocket connection opened to " + wsUrl);
-//         }
-//     }
-// }
+function updateScanResults() {
+    scanResultsDiv.innerHTML = "";
+    if (rokuIpList.length === 0) {
+        scanResultsDiv.innerHTML = "<p>No Roku devices found.</p>";
+    }
+    else {
+        rokuIpList.forEach(ip => {
+            scanResultsDiv.innerHTML += `<p>${ip}</p>`;
+        });
+    }
+}

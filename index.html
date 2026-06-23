@@ -3,18 +3,21 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width-device-width, initial-scale=1.0">
-        <title>Home Control</title>
+        <title>Roku Remote</title>
         <link rel="stylesheet" href="css/style.css">
         <link rel="icon" href="assets/images/remote-controller-icon.png">
         <script src="script.js" defer></script>
     </head>
     <body>
         <main>
-            <div class="pane">
-                <h1>Home Control</h1>
+            <div class="pane" id="info">
+                <h1>Roku Remote</h1>
                 <p>Use the remote to control your devices and the scanner to find them on your network.</p>
             </div>
-            <div class="pane">
+            <div class="remote">
+                <div class="ip-row">
+                    <input id="roku-ip" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="15" placeholder="IP Address (192.168.0.X)">
+                </div>
                 <div class="two-row-buttons">
                     <button class="remote-buttons" id="PowerOn" style="background-color: #06822b;"><strong>&#9211</strong></button>
                     <button class="remote-buttons" id="PowerOff" style="background-color: #d90429;"><strong>&#9211</strong></button>
@@ -49,18 +52,34 @@
                 </div>
                 <div class="keyboard-row">
                     <input id="keyboard-input" type="text" placeholder="Type here...">
-                    <button id="keyboard-clear">&#128465;</button>
+                    <button class="remote-buttons" id="keyboard-clear">&#128465;</button>
                 </div>
             </div>
-            <div class="pane">
+            <div class="pane" id="scanner">
                 <h2>Device Scanner</h2>
-                <div id="scan-results"></div>
-                <input id="subnet-start" type="text" placeholder="Subnet start (e.g. 192.168.0)">
-                <span>.</span>
-                <input id="low-ip" type="number" placeholder="Low IP (e.g. 1)" min="0" max="255">
-                <span>-</span>
-                <input id="high-ip" type="number" placeholder="High IP (e.g. 254)" min="0" max="255">
-                <button id="scan-button">Scan for devices</button>
+                <span>Scan range:</span>
+                <div class="ip-row">
+                    <input class="ip-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="192">
+                    <span>.</span>
+                    <input class="ip-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="168">
+                    <span>.</span>
+                    <input class="ip-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="0">
+                    <span>.</span>
+                    <input class="ip-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="1">
+                    <span>&#32;-&#32;</span>
+                    <input class="ip-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="255">
+                </div>
+                <div>
+                    <span>Autofill first result:</span>
+                    <input type="checkbox" id="autofill-checkbox">
+                </div>
+                <button id="scan-button" class="remote-buttons">Scan for devices</button>
+                <div id="scan-status">
+                    <!-- Scan status will be displayed here -->
+                </div>
+                <div id="scan-results">
+                    <!-- Scan results will be displayed here -->
+                </div>
             </div>
         </main>
         <footer>
