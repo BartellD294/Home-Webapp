@@ -32,6 +32,7 @@ footer {
 p {
     font-family: Arial, sans-serif;
     color: white;
+    margin: 0.5rem 0;
 }
 
 button {
@@ -63,6 +64,7 @@ input {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
 
     width: 15rem;
     max-height: 30rem;
