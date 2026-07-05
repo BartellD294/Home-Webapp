@@ -8,6 +8,8 @@ const scanResultsDiv = document.querySelector("#scan-results");
 const scanStatusDiv = document.querySelector("#scan-status");
 //var rokuUrl = "http://192.168.0.148:8060/keypress/";
 
+document.addEventListener("DOMContentLoaded", loadIp);
+
 var scanIsRunning = false;
 
 console.log(scanOctets);
@@ -37,6 +39,8 @@ scanButton.addEventListener("click", () => {
     let ipStart = scanOctets[0].value + "." + scanOctets[1].value + "." + scanOctets[2].value;
     scanForRokus(ipStart, scanOctets[3].value, scanOctets[4].value);
 });
+
+rokuIpInput.addEventListener("change", saveIp);
 
 // functions
 async function buttonPress(event) {
@@ -101,6 +105,7 @@ async function scanForRokus(subnetStart, lowIp, highIp, timeout=100) {
                 console.log(rokuIpList);
                 if (document.querySelector("#autofill-checkbox").checked && rokuIpList.length > 0) {
                     rokuIpInput.value = rokuIpList[0];
+                    saveIp();
                 }
                 updateScanResults();
             }
@@ -125,5 +130,16 @@ function updateScanResults() {
         rokuIpList.forEach(ip => {
             scanResultsDiv.innerHTML += `<p>${ip}</p>`;
         });
+    }
+}
+
+function saveIp() {
+    localStorage.setItem("rokuIp", rokuIpInput.value);
+}
+
+function loadIp() {
+    const savedIp = localStorage.getItem("rokuIp");
+    if (savedIp) {
+        rokuIpInput.value = savedIp;
     }
 }
